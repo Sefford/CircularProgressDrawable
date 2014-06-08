@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello circular-progress-drawable!</string>
+    <string name="lib_name">circular-progress-drawable</string>
+</resources>
