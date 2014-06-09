@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sefford</groupId>
     <artifactId>circular-progress-drawable</artifactId>
-    <version>1.0</version>
+    <version>1.2</version>
     <packaging>aar</packaging>
     <name>circular-progress-drawable</name>
     <description>A circular drawable that can be used to indicate progress.
