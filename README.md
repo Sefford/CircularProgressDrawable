@@ -12,6 +12,30 @@ way to achieve it is subclassing a Drawable instead of subclassing a Button or a
 In order to implement advanced behavior over the Drawable, you can still implement your own animations
 by using Android animations framework or by the use of listeners on the views you are using.
 
+Download
+--------
+
+### Bundle
+
+CircularProgressDrawable comes bundled in `aar` format. Grab the latest bundle from [here](http://search.maven.org/remotecontent?filepath=com/sefford/circular-progress-drawable/1.2/circular-progress-drawable-1.2.aar)
+
+### Maven
+
+```XML
+<dependency>
+    <groupId>com.sefford</groupId>
+    <artifactId>circular-progress-drawable</artifactId>
+    <version>1.2</version>
+    <type>aar</type>
+</dependency>
+```
+
+### Gradle 
+
+```groovy
+compile 'com.sefford:circular-progress-drawable:1.2@aar'
+```
+
 Composition
 -----------
 
