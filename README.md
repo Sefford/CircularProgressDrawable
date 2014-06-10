@@ -61,7 +61,7 @@ The drawable allows both for a progress and an indetermination mode. In the inde
 instead of filling the outer ring, a 90º arc will be shown that can be animated to spin around the
 inner circle.
 
-![Overshoot Example](overshoot.gif)
+![Overshoot Example](overshoot.gif) ![Colorfill Example](colorfill.gif)
 
 Tips
 ----
