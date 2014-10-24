@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:orientation="horizontal"
+              android:gravity="center_vertical"
+              android:weightSum="2">
+
+    <ImageView
+        android:id="@+id/iv_drawable"
+        android:layout_width="match_parent"
+        android:layout_height="256dip"
+        android:padding="12dip"
+        android:layout_weight="1"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/bt_style_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_style_1_text"/>
+
+        <Button
+            android:id="@+id/bt_style_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_style_2_text"/>
+
+        <Button
+            android:id="@+id/bt_style_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_style_3_text"/>
+
+        <Button
+            android:id="@+id/bt_style_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_style_4_text"/>
+    </LinearLayout>
+</LinearLayout>

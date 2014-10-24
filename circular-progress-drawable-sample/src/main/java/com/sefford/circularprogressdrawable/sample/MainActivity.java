@@ -16,6 +16,7 @@
 package com.sefford.circularprogressdrawable.sample;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
@@ -89,10 +90,12 @@ public class MainActivity extends Activity {
         btStyle3 = (Button) findViewById(R.id.bt_style_3);
         btStyle4 = (Button) findViewById(R.id.bt_style_4);
 
-        drawable = new CircularProgressDrawable(getResources().getDimensionPixelSize(R.dimen.drawable_ring_size),
-                getResources().getColor(android.R.color.darker_gray),
-                getResources().getColor(android.R.color.holo_green_light),
-                getResources().getColor(android.R.color.holo_blue_dark));
+        drawable = new CircularProgressDrawable.Builder()
+                .setRingWidth(getResources().getDimensionPixelSize(R.dimen.drawable_ring_size))
+                .setOutlineColor(getResources().getColor(android.R.color.darker_gray))
+                .setRingColor(getResources().getColor(android.R.color.holo_green_light))
+                .setCenterColor(getResources().getColor(android.R.color.holo_blue_dark))
+                .create();
         ivDrawable.setImageDrawable(drawable);
         hookUpListeners();
     }
@@ -112,7 +115,8 @@ public class MainActivity extends Activity {
      * @return Animation
      */
     private Animator preparePressedAnimation() {
-        Animator animation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_FILL_PROPERTY, drawable.getCircleScale(), 0.9f);
+        Animator animation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_SCALE_PROPERTY,
+                drawable.getCircleScale(), 0.65f);
         animation.setDuration(120);
         return animation;
     }
@@ -125,13 +129,16 @@ public class MainActivity extends Activity {
     private Animator preparePulseAnimation() {
         AnimatorSet animation = new AnimatorSet();
 
-        Animator firstBounce = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_FILL_PROPERTY, drawable.getCircleScale(), 1.13f);
+        Animator firstBounce = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_SCALE_PROPERTY,
+                drawable.getCircleScale(), 0.88f);
         firstBounce.setDuration(300);
         firstBounce.setInterpolator(new CycleInterpolator(1));
-        Animator secondBounce = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_FILL_PROPERTY, 1f, 1.08f);
+        Animator secondBounce = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_SCALE_PROPERTY,
+                0.75f, 0.83f);
         secondBounce.setDuration(300);
         secondBounce.setInterpolator(new CycleInterpolator(1));
-        Animator thirdBounce = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_FILL_PROPERTY, 1f, 1.05f);
+        Animator thirdBounce = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_SCALE_PROPERTY,
+                0.75f, 0.80f);
         thirdBounce.setDuration(300);
         thirdBounce.setInterpolator(new CycleInterpolator(1));
 
@@ -151,9 +158,9 @@ public class MainActivity extends Activity {
         final Animator indeterminateAnimation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.PROGRESS_PROPERTY, 0, 3600);
         indeterminateAnimation.setDuration(3600);
 
-        Animator innerCircleAnimation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_FILL_PROPERTY, 0f, 1f);
+        Animator innerCircleAnimation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_SCALE_PROPERTY, 0f, 0.75f);
         innerCircleAnimation.setDuration(3600);
-        innerCircleAnimation.addListener(new EmptyAnimatorListener() {
+        innerCircleAnimation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 drawable.setIndeterminate(true);
@@ -179,11 +186,13 @@ public class MainActivity extends Activity {
     private Animator prepareStyle2Animation() {
         AnimatorSet animation = new AnimatorSet();
 
-        ObjectAnimator progressAnimation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.PROGRESS_PROPERTY, 0f, 1f);
+        ObjectAnimator progressAnimation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.PROGRESS_PROPERTY,
+                0f, 1f);
         progressAnimation.setDuration(3600);
         progressAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
 
-        ObjectAnimator colorAnimator = ObjectAnimator.ofInt(drawable, "ringColor", getResources().getColor(android.R.color.holo_red_dark),
+        ObjectAnimator colorAnimator = ObjectAnimator.ofInt(drawable, CircularProgressDrawable.RING_COLOR_PROPERTY,
+                getResources().getColor(android.R.color.holo_red_dark),
                 getResources().getColor(android.R.color.holo_green_light));
         colorAnimator.setEvaluator(new ArgbEvaluator());
         colorAnimator.setDuration(3600);
@@ -205,7 +214,7 @@ public class MainActivity extends Activity {
         progressAnimation.setDuration(1200);
         progressAnimation.setInterpolator(new AnticipateInterpolator());
 
-        Animator innerCircleAnimation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_FILL_PROPERTY, 1f, 0f);
+        Animator innerCircleAnimation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_SCALE_PROPERTY, 0.75f, 0f);
         innerCircleAnimation.setDuration(1200);
         innerCircleAnimation.setInterpolator(new AnticipateInterpolator());
 
@@ -214,36 +223,13 @@ public class MainActivity extends Activity {
         invertedProgress.setStartDelay(3200);
         invertedProgress.setInterpolator(new OvershootInterpolator());
 
-        Animator invertedCircle = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_FILL_PROPERTY, 0f, 1f);
+        Animator invertedCircle = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.CIRCLE_SCALE_PROPERTY, 0f, 0.75f);
         invertedCircle.setDuration(1200);
         invertedCircle.setStartDelay(3200);
         invertedCircle.setInterpolator(new OvershootInterpolator());
 
         animation.playTogether(progressAnimation, innerCircleAnimation, invertedProgress, invertedCircle);
         return animation;
-    }
-
-    class EmptyAnimatorListener implements Animator.AnimatorListener {
-
-        @Override
-        public void onAnimationStart(Animator animation) {
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animation) {
-
-        }
-
-        @Override
-        public void onAnimationCancel(Animator animation) {
-
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animation) {
-
-        }
     }
 }
 

@@ -43,10 +43,12 @@ public class CircularProgressDrawable extends Drawable {
     /**
      * Property Inner Circle Scale.
      * <p/>
-     * The inner ring is supposed to stay 3/4 radius off the outer ring at 100% scale, but this
-     * property can make it grow or shrink via this equation: InnerRadius * Scale.
+     * The inner ring is supposed to defaults stay 3/4 radius off the outer ring at (75% scale), but this
+     * property can make it grow or shrink via this equation: OuterRadius * Scale.
+     * <p/>
+     * A 100% scale will make the inner circle to be the same radius as the outer ring.
      */
-    public static final String CIRCLE_FILL_PROPERTY = "circleScale";
+    public static final String CIRCLE_SCALE_PROPERTY = "circleScale";
     /**
      * Property Progress of the outer circle.
      * <p/>
@@ -57,6 +59,24 @@ public class CircularProgressDrawable extends Drawable {
      * show a 90º arc which will be spinning around the outer circle as much as progress goes.
      */
     public static final String PROGRESS_PROPERTY = "progress";
+    /**
+     * Property Ring color.
+     * <p/>
+     * Changes the ring filling color
+     */
+    public static final String RING_COLOR_PROPERTY = "ringColor";
+    /**
+     * Property circle color.
+     * <p/>
+     * Changes the inner circle color
+     */
+    public static final String CIRCLE_COLOR_PROPERTY = "circleColor";
+    /**
+     * Property outline color.
+     * <p/>
+     * Changes the outline of the ring color.
+     */
+    public static final String OUTLINE_COLOR_PROPERTY = "outlineColor";
     /**
      * Logger Tag for Logging purposes.
      */
@@ -91,7 +111,7 @@ public class CircularProgressDrawable extends Drawable {
     protected final int ringWidth;
     /**
      * Scale of the inner circle. It will affect the inner circle size on this equation:
-     * ([Bigger length of the Drawable] / 2) * 0.75.
+     * ([Biggest length of the Drawable] / 2) - (ringWidth / 2) * scale.
      */
     protected float circleScale;
     /**
@@ -103,11 +123,12 @@ public class CircularProgressDrawable extends Drawable {
      * Creates a new CouponDrawable.
      *
      * @param ringWidth    Width of the filled ring
+     * @param circleScale  Scale difference between the outer ring and the inner circle
      * @param outlineColor Color for the outline color
      * @param ringColor    Color for the filled ring
      * @param centerColor  Color for the center element
      */
-    public CircularProgressDrawable(int ringWidth, int outlineColor, int ringColor, int centerColor) {
+    CircularProgressDrawable(int ringWidth, float circleScale, int outlineColor, int ringColor, int centerColor) {
         this.progress = 0;
         this.outlineColor = outlineColor;
         this.ringColor = ringColor;
@@ -116,7 +137,7 @@ public class CircularProgressDrawable extends Drawable {
         this.paint.setAntiAlias(true);
         this.ringWidth = ringWidth;
         this.arcElements = new RectF();
-        this.circleScale = 1;
+        this.circleScale = circleScale;
         this.indeterminate = false;
     }
 
@@ -125,9 +146,9 @@ public class CircularProgressDrawable extends Drawable {
         final Rect bounds = getBounds();
 
         // Calculations on the different components sizes
-        int size = bounds.height() > bounds.width() ? bounds.width() : bounds.height();
-        float outerRadius = ((size / 2) * 0.75f) * 0.937f;
-        float innerRadius = ((size / 2) * 0.75f) * 0.75f;
+        int size = Math.min(bounds.height(), bounds.width());
+        float outerRadius = (size / 2) - (ringWidth / 2);
+        float innerRadius = outerRadius * circleScale;
         float offsetX = (bounds.width() - outerRadius * 2) / 2;
         float offsetY = (bounds.height() - outerRadius * 2) / 2;
 
@@ -140,7 +161,7 @@ public class CircularProgressDrawable extends Drawable {
         // Inner circle
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(centerColor);
-        canvas.drawCircle(bounds.centerX(), bounds.centerY(), innerRadius * circleScale, paint);
+        canvas.drawCircle(bounds.centerX(), bounds.centerY(), innerRadius, paint);
 
         int halfRingWidth = ringWidth / 2;
         float arcX0 = offsetX + halfRingWidth;
@@ -168,12 +189,12 @@ public class CircularProgressDrawable extends Drawable {
 
     @Override
     public void setColorFilter(ColorFilter cf) {
-        // Empty
+        paint.setColorFilter(cf);
     }
 
     @Override
     public int getOpacity() {
-        return paint.getAlpha();
+        return 1 - paint.getAlpha();
     }
 
 
@@ -277,7 +298,7 @@ public class CircularProgressDrawable extends Drawable {
     /**
      * Sets the empty progress outline color.
      *
-     * @param outlineColor Outline color in Integer format.
+     * @param outlineColor Outline color in #AARRGGBB format.
      */
     public void setOutlineColor(int outlineColor) {
         this.outlineColor = outlineColor;
@@ -287,7 +308,7 @@ public class CircularProgressDrawable extends Drawable {
     /**
      * Sets the progress ring  color.
      *
-     * @param ringColor Ring color in Integer format.
+     * @param ringColor Ring color in #AARRGGBB format.
      */
     public void setRingColor(int ringColor) {
         this.ringColor = ringColor;
@@ -297,10 +318,105 @@ public class CircularProgressDrawable extends Drawable {
     /**
      * Sets the inner circle color.
      *
-     * @param centerColor Inner circle color in Integer format.
+     * @param centerColor Inner circle color in #AARRGGBB format.
      */
     public void setCenterColor(int centerColor) {
         this.centerColor = centerColor;
         invalidateSelf();
+    }
+
+    /**
+     * Helper class to manage the creation of a CircularProgressDrawable
+     *
+     * @author Saul Diaz <sefford@gmail.com>
+     */
+    public static class Builder {
+
+        /**
+         * Witdh of the stroke of the filled ring
+         */
+        int ringWidth;
+        /**
+         * Color of the outline of the empty ring in #AARRGGBB mode.
+         */
+        int outlineColor;
+        /**
+         * Color of the filled ring in #AARRGGBB mode.
+         */
+        int ringColor;
+        /**
+         * Color of the inner circle in #AARRGGBB mode.
+         */
+        int centerColor;
+        /**
+         * Scale between the outer ring and the inner circle
+         */
+        float circleScale = 0.75f;
+
+        /**
+         * Sets the ring width.
+         *
+         * @param ringWidth Default ring width
+         * @return This builder
+         */
+        public Builder setRingWidth(int ringWidth) {
+            this.ringWidth = ringWidth;
+            return this;
+        }
+
+        /**
+         * Sets the default empty outer ring outline color.
+         *
+         * @param outlineColor Outline color in #AARRGGBB format.
+         * @return
+         */
+        public Builder setOutlineColor(int outlineColor) {
+            this.outlineColor = outlineColor;
+            return this;
+        }
+
+        /**
+         * Sets the progress ring color.
+         *
+         * @param ringColor Ring color in #AARRGGBB format.
+         * @returns This Builder
+         */
+        public Builder setRingColor(int ringColor) {
+            this.ringColor = ringColor;
+            return this;
+        }
+
+
+        /**
+         * Sets the inner circle color.
+         *
+         * @param centerColor Inner circle color in #AARRGGBB format.
+         * @return This builder
+         */
+        public Builder setCenterColor(int centerColor) {
+            this.centerColor = centerColor;
+            return this;
+        }
+
+        /**
+         * Sets the inner circle scale. Defaults to 0.75.
+         *
+         * @param circleScale Inner circle scale.
+         * @return This builder
+         */
+        public Builder setInnerCircleScale(float circleScale) {
+            this.circleScale = circleScale;
+            return this;
+        }
+
+        /**
+         * Creates a new CircularProgressDrawable with the requested parameters
+         *
+         * @return New CircularProgressDrawableInstance
+         */
+        public CircularProgressDrawable create() {
+            return new CircularProgressDrawable(ringWidth, circleScale, outlineColor, ringColor, centerColor);
+        }
+
     }
 }
