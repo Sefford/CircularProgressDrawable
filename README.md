@@ -17,7 +17,7 @@ Download
 
 ### Bundle
 
-CircularProgressDrawable comes bundled in `aar` format. Grab the latest bundle from [here](http://search.maven.org/remotecontent?filepath=com/sefford/circular-progress-drawable/1.2/circular-progress-drawable-1.2.aar)
+CircularProgressDrawable comes bundled in `aar` format. Grab the latest bundle from [here](http://search.maven.org/remotecontent?filepath=com/sefford/circular-progress-drawable/1.3/circular-progress-drawable-1.3.aar)
 
 ### Maven
 
@@ -25,7 +25,7 @@ CircularProgressDrawable comes bundled in `aar` format. Grab the latest bundle f
 <dependency>
     <groupId>com.sefford</groupId>
     <artifactId>circular-progress-drawable</artifactId>
-    <version>1.2</version>
+    <version>1.3</version>
     <type>aar</type>
 </dependency>
 ```
@@ -33,7 +33,7 @@ CircularProgressDrawable comes bundled in `aar` format. Grab the latest bundle f
 ### Gradle 
 
 ```groovy
-compile 'com.sefford:circular-progress-drawable:1.2@aar'
+compile 'com.sefford:circular-progress-drawable:1.3@aar'
 ```
 
 Composition
@@ -41,9 +41,7 @@ Composition
 
 The Circular Progress Drawable is made out of three differentiated components:
 
-* The first one is what is known as the *inner circle*. The inner circle takes up to 3/4 of the radius
-of the drawable and can be scaled up and down to achieve a progress effect or to serve a background
-for a TextView on top to indicate its meaning. 
+* The first one is what is known as the *inner circle*. The radius of the drawable and can be scaled up and down to achieve a progress effect or to serve a background for a TextView on top to indicate its meaning. 
 * The next is the *outline ring*. This ring will surround the inner circle and it is intended as
  a subtle cue of the empty state of the progress.
 * The last is the *outer ring*. It will be used for several purposes. The first is to show the progress
