@@ -3,7 +3,7 @@ CircularProgressDrawable
 
 A drawable with capabilities to indicate progress.
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CircularProgressDrawable-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1071
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CircularProgressDrawable-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1071)
 
 Why a drawable?
 ---------------
