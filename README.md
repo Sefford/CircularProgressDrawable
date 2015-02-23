@@ -27,7 +27,7 @@ CircularProgressDrawable comes bundled in `aar` format. Grab the latest bundle f
 <dependency>
     <groupId>com.sefford</groupId>
     <artifactId>circular-progress-drawable</artifactId>
-    <version>1.3</version>
+    <version>1.31</version>
     <type>aar</type>
 </dependency>
 ```
@@ -35,7 +35,7 @@ CircularProgressDrawable comes bundled in `aar` format. Grab the latest bundle f
 ### Gradle 
 
 ```groovy
-compile 'com.sefford:circular-progress-drawable:1.3@aar'
+compile 'com.sefford:circular-progress-drawable:1.31@aar'
 ```
 
 Composition
