@@ -70,7 +70,7 @@ public class CircularProgressDrawable extends Drawable {
      * <p/>
      * Changes the inner circle color
      */
-    public static final String CIRCLE_COLOR_PROPERTY = "circleColor";
+    public static final String CIRCLE_COLOR_PROPERTY = "centerColor";
     /**
      * Property outline color.
      * <p/>
