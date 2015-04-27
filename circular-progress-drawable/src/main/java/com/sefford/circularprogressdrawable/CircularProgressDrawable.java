@@ -143,10 +143,19 @@ public class CircularProgressDrawable extends Drawable {
 
     @Override
     public void draw(Canvas canvas) {
-        final Rect bounds = getBounds();
+        draw(canvas, 0);
+    }
 
-        // Calculations on the different components sizes
-        int size = Math.min(bounds.height(), bounds.width());
+    /**
+     * 
+     * @param canvas
+     * @param size of the circle. If <= 0 then circle fill whole canvas
+     */
+    protected void draw(Canvas canvas, int size) {
+        final Rect bounds = getBounds();
+        if(size <= 0){
+            size =  Math.min(bounds.height(), bounds.width());
+        }
         float outerRadius = (size / 2) - (ringWidth / 2);
         float innerRadius = outerRadius * circleScale;
         float offsetX = (bounds.width() - outerRadius * 2) / 2;
